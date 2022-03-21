@@ -1,5 +1,6 @@
 import React from "react";
 
+let temp;
 const Todo = () => {
     const [inputValue, setInputValue] = React.useState("");
     const [todos, setTodos] = React.useState([]);
@@ -16,7 +17,8 @@ const Todo = () => {
         fetch (`http://localhost:3004/todos?_page=${page}&_limit=3`)
             .then((res) => res.json())
             .then((res) => {
-                console.log(res)
+                temp = res.length;
+                console.log(res.length)
                 setTodos(res);
                 setIsError(false);
             })
@@ -59,13 +61,15 @@ const Todo = () => {
                 onChange={(e) => setInputValue(e.target.value)}
             />
             <button onClick={handleAdd}>Save</button>
-            {
+            {   
                 todos.map((item) => {
+
                     return <div>{item.title}</div>
+                    
                 })
             }
             <button onClick={() => setPage(page - 1)} disabled={page===1}>PREV</button>
-            <button onClick={() => setPage(page + 1)}>NEXT</button>
+            <button onClick={() => setPage(page + 1)} disabled={temp<3}>NEXT</button>
         </div>
     )
 }
